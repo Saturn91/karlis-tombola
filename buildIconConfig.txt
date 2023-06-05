@@ -1,0 +1,4 @@
+this params are used to describe the icon for binary builds
+i: 1
+s: 1
+c: 0

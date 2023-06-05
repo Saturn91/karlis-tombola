@@ -13,7 +13,7 @@ local gfx_states = {
     },
     {
         state="roll_out",
-        duration=60
+        duration=15
     },
 }
 
@@ -30,6 +30,11 @@ local shuffleAnimationDog = {
     { x=0, y=0 },
     { x=39,y=0}
 }
+
+local ballPosY1 = 86
+local ballPosY2 = 110
+
+local curBallPosY
 
 local animations = {
     ready={ dog=idleAnimationDog },
@@ -81,6 +86,11 @@ function GFX.update()
         end
     end
 
+    if gfx_states[GFX.stateIndex].state == 'roll_out' then
+        local duration = gfx_states[GFX.stateIndex].duration
+        curBallPosY = (duration- currentTimer) / duration * (ballPosY2 - ballPosY1) + ballPosY1
+    end
+
     curAniFrames -= 1
     if curAniFrames <= 0 then
         curAniFrames = aniFrames
@@ -94,6 +104,40 @@ function GFX.draw()
     cur_ani = animations[gfx_states[GFX.stateIndex].state]
     sspr(40,39,41,39,pos.x+36,pos.y)
     drawDog(pos)
+    if gfx_states[GFX.stateIndex].state == 'ready' then
+        print("press x to draw a number", 5, 10, 9)
+    end
+
+    if gfx_states[GFX.stateIndex].state == 'roll_out' then
+        circfill(84,curBallPosY,5,6)
+    end
+
+    if #Controller.drawnNumbers > 0 then
+        local scrollPos = 0
+        local shownNumbersCount = #Controller.drawnNumbers
+        if #Controller.drawnNumbers > 11 then
+            scrollPos = #Controller.drawnNumbers - 11
+            shownNumbersCount = 11
+        end
+
+        for i=1,shownNumbersCount do
+            local number = Controller.drawnNumbers[i+scrollPos]
+            local col = 13
+            local numStr = ""..number
+            if number < 10 then numStr = "0"..number end
+            if i == shownNumbersCount then
+                col = 9
+                circfill(84,ballPosY2,5,6)
+                print(""..numStr, 81, ballPosY2-2,1)
+            end           
+
+            print(""..numStr, i*10, 120,col)
+        end
+    end
+
+    if btn(4) then
+        print(#Controller.drawnNumbers.."/"..#availableNumbers)
+    end
 end
 
 function drawDog(pos)
