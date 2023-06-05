@@ -5,12 +5,15 @@ local lastNum = nil
 
 function _init()
 	initNumberManager(maxNumber)
+	Controller.init()
+	GFX.init()
 end
 
 function _update()
-	nextNumber = getNextNumber()
+	Controller.update()
+	GFX.update()
 end
 
 function _draw()
-	if nextNumber != nil then print(nextNumber) end
+	GFX.draw()
 end
