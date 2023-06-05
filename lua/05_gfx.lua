@@ -17,6 +17,26 @@ local gfx_states = {
     },
 }
 
+local aniFrames = 8
+local curAniFrames = aniFrames
+local curAniIndex = 1
+
+local idleAnimationDog={
+    { x=78, y=0 },
+    { x=0,y=39}
+}
+
+local shuffleAnimationDog = {
+    { x=0, y=0 },
+    { x=39,y=0}
+}
+
+local animations = {
+    ready={ dog=idleAnimationDog },
+    shuffle = { dog=shuffleAnimationDog },
+    roll_out= { dog=idleAnimationDog },
+}
+
 local currentTimer = 0
 
 GFX.stateIndex = 1
@@ -25,6 +45,8 @@ local lastStateIndex = 0
 function GFX.init()
     GFX.stateIndex = 1
     GFX.state = gfx_states[GFX.stateIndex].state
+    curAniFrames = aniFrames
+    curAniIndex = 1
 end
 
 function GFX.update()
@@ -58,8 +80,25 @@ function GFX.update()
             print(gfx_states[GFX.stateIndex].state)
         end
     end
+
+    curAniFrames -= 1
+    if curAniFrames <= 0 then
+        curAniFrames = aniFrames
+        curAniIndex += 1
+        if curAniIndex == 3 then curAniIndex = 1 end
+    end
 end
 
 function GFX.draw()
+    local pos = {x=24,y=45}
+    cur_ani = animations[gfx_states[GFX.stateIndex].state]
+    sspr(40,39,41,39,pos.x+36,pos.y)
+    drawDog(pos)
+end
 
+function drawDog(pos)
+    local currentSpr = cur_ani.dog[curAniIndex]
+    if currentSpr then
+        sspr(currentSpr.x,currentSpr.y,39,39,pos.x,pos.y)
+    end
 end
