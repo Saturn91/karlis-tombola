@@ -100,12 +100,14 @@ function GFX.update()
 end
 
 function GFX.draw()
+    print("karlis tombola", 37, 2, 11)
+    line(35,8,93,8,11)
     local pos = {x=24,y=45}
     cur_ani = animations[gfx_states[GFX.stateIndex].state]
     sspr(40,39,41,39,pos.x+36,pos.y)
     drawDog(pos)
     if gfx_states[GFX.stateIndex].state == 'ready' then
-        print("press x to draw a number", 5, 10, 9)
+        print("press x to draw a number", 15, 25, 9)
     end
 
     if gfx_states[GFX.stateIndex].state == 'roll_out' then

@@ -1,5 +1,5 @@
 --number_manager
-local availableNumbers = {}
+availableNumbers = {}
 
 function initNumberManager(number)
     availableNumbers = {}
