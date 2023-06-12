@@ -1,5 +1,5 @@
 --main
-local maxNumber = 80
+local maxNumber = 90
 
 local lastNum = nil
 
